@@ -1,0 +1,15 @@
+#lang racket
+(define (square x) (* x x))
+(define (map operation items)
+  (cond ((null? items) null)
+        (else (cons (operation (car items)) (map operation (cdr items))))))
+
+(define (square-tree tree)
+  (cond ((null? tree) null)
+        ((not (pair? tree)) (square tree))
+        (else (cons (square-tree (car tree)) (square-tree (cdr tree))))))
+(define (square-tree-map tree)
+  (map (lambda (t)
+         (if (pair? t)
+             (square-tree-map t)
+             (square t))) tree))

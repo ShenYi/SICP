@@ -1,0 +1,11 @@
+#lang racket
+(define (same-parity . numbers)
+  (define (even? a) (= (remainder a 2) 0))
+  (define (odd? a) (not (even? a)))
+  (define (get-all-numbers condition numbers)
+    (cond ((null? numbers) null)
+          ((condition (car numbers)) (cons (car numbers) (get-all-numbers condition (cdr numbers))))
+          (else (get-all-numbers condition (cdr numbers)))))
+  (cond ((null? numbers) null)
+        ((even? (car numbers)) (cons (car numbers) (get-all-numbers even? (cdr numbers))))
+        (else (cons (car numbers) (get-all-numbers odd? (cdr numbers))))))

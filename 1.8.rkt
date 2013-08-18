@@ -1,0 +1,13 @@
+#lang racket
+(define (square x) (* x x))
+(define (abs x) (if (>= x 0) x (- x)))
+(define (improve guess x)
+  (/ (+ (/ x (square guess)) (* 2 guess)) 3))
+(define (good-enough old-guess new-guess)
+  (< (abs (- old-guess new-guess)) 0.0000001))
+(define (cube-inner guess x)
+  (if (good-enough guess (improve guess x))
+      (improve guess x)
+      (cube-inner (improve guess x) x)))
+(define (cube x)
+  (cube-inner 0.001 x))

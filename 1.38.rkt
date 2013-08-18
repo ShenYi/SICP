@@ -1,0 +1,16 @@
+#lang racket
+(define (cont-frac n d k)
+  (define (compute result current)
+    (let ((nk (n current))
+          (dk (d current)))
+      (let ((temp (/ nk (+ dk result))))
+        (if (= current 0)
+          result
+          (compute temp (- current 1))))))
+  (compute 0 k))
+(cont-frac (lambda (x) 1.0)
+           (lambda (x) 
+             (cond ((< x 3) x)
+                   ((= (remainder (- x 2) 3) 0) (* (+ (/ (- x 2) 3) 1) 2))
+                   (else 1)))
+           100)

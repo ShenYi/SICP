@@ -1,0 +1,10 @@
+#lang racket
+(define (cons x y)
+  (lambda (m) (m x y)))
+(define (car z)
+  (z (lambda (p q) (exp 2 p))))
+(define (cdr z)
+  (z (lambda (p q) (exp 3 q))))
+(define (exp a b)
+  (cond ((= b 0) 1)
+        (else (* a (exp a (- b 1))))))

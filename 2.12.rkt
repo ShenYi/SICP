@@ -1,0 +1,13 @@
+#lang racket
+(define (make-interval x y)
+  (cons x y))
+(define (make-center-percent x y)
+  (make-interval (- x (* x y)) (+ x (* x y))))
+(define (lower-bound i)
+  (car i))
+(define (upper-bound i)
+  (cdr i))
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+(define (percent i)
+  (/ (- (upper-bound i) (center i)) center))

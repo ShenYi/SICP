@@ -1,0 +1,10 @@
+#lang racket
+(define (cons a b)
+  (* (expt 2 a)
+     (expt 3 b)))
+(define (car z)
+  (cond ((= (remainder z 2) 0) (+ 1 (car (/ z 2))))
+        (else 0)))
+(define (cdr z)
+  (cond ((= (remainder z 3) 0) (+ 1 (cdr (/ z 3))))
+        (else 0)))
