@@ -1,5 +1,6 @@
 #lang racket
 (define (deriv exp var)
+  (display exp) (newline)
   (cond ((number? exp) 0)
         ((variable? exp)
          (if (same-variable? exp var) 1 0))
@@ -20,6 +21,7 @@
                  (make-product e aa))))))
         (else
          (newline)
+         (display exp)
          (display "unknown expression"))))
 
 (define (variable? x) (symbol? x))
@@ -29,11 +31,17 @@
 (define (sum? x)
   (and (pair? x) (eq? (car x) '+)))
 (define (addend s) (cadr s))
-(define (augend s) (caddr s))
+(define (augend s) 
+  (let ((t (cdr (cdr s))))
+    (cond ((null? (cdr t)) (car t))
+          (else (cons '+ t)))))
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))
 (define (multiplier p) (cadr p))
-(define (multiplicand p) (caddr p))
+(define (multiplicand p) 
+  (let ((t (cdr (cdr p))))
+    (cond ((null? (cdr t)) (car t))
+          (else (cons '* t)))))
 (define (make-sum a1 a2)
   (cond ((and (number? a1) (= a1 0)) a2)
         ((and (number? a2) (= a2 0)) a1)
@@ -57,4 +65,4 @@
         ((= exponent 1) base)
         (else (list '** base exponent))))
 
-(deriv (list '** 'x 7) 'x)
+(deriv '(* x y (+ x 3)) 'x)
