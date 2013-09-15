@@ -1,0 +1,23 @@
+#lang racket
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply op args)
+          (if (= (length args) 2)
+              (let ((type1 (car type-tags))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
+                    (a2 (car args))
+                (let ((type1-order (get-order type1))
+                      (type2-order (get-order type2)))
+                  (cond ((= type1-order type2-order) (error "No Method"))
+                        ((> type1-order type2-order) 
+                         (let ((type2->type1 (get-coercion type2 type1)))
+                           (apply-generic op a1 (type2->type1 a2))))
+                        (else
+                         (let ((type1->type2 (get-coercion type1 type2)))
+                           (apply-generic op (type1->type2 a1) a2)))))))
+              (error "No Method")
+              (error "No Method")
+              )))))
