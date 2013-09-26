@@ -1,0 +1,15 @@
+#lang racket
+(define (rand . args)
+  (define rand-value 0)
+  (define rand-update
+    (lambda () ()))
+  (cond ((null? args)
+         (error "Wrong Arguments"))
+        (if (null? (cdr args))
+            (let ((arg (car args)))
+              (cond ((eq? arg 'generate) 
+                     (begin (rand-update) rand-value))
+                    ((eq? arg 'reset)
+                     (lambda (new-value) (set! rand-value new-value)))
+                    (else (error "wrong arguments"))))
+            (error "wrong arguments"))))

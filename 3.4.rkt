@@ -1,0 +1,25 @@
+#lang racket
+(define (make-account balance password)
+  (define wrong-try 0)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (begin
+      (set! balance (+ balance amount))
+      balance))
+  (define (dispatch psw op)
+    (if (eq? psw password)
+        (begin
+          (set! wrong-try 0)
+         (cond ((eq? op 'withdraw) withdraw)
+              ((eq? op 'deposit) deposit)
+              (else (error "Unknown request"))))
+        (begin
+          (set! wrong-try (+ wrong-try 1))
+          (if (= wrong-try 7)
+              (error "call the cops")
+              (display "wrong password")))))
+  dispatch)
